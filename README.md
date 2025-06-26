@@ -12,4 +12,6 @@ reboot
 
 sudo apt install python3-opencv -y
 
+put detectUSB.py in /home/USERNAME/picamera2/examples/hailo
+
 Captures videos and makes .mp4 videos
