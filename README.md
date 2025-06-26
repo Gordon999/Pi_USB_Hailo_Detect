@@ -1,6 +1,6 @@
 # Pi_USB_Hailo_Detect
 
-![screenshot](screenshot.jpg)
+![screenshot](screen.jpg)
 
 To setup the hailo..
 
