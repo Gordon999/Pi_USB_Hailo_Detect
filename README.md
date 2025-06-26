@@ -1,5 +1,7 @@
 # Pi_USB_Hailo_Detect
 
+![screenshot](screenshot.jpg)
+
 To setup the hailo..
 
  sudo apt install hailo-all
