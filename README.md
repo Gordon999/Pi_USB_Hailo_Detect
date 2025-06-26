@@ -1,5 +1,7 @@
 # Pi_USB_Hailo_Detect
 
+Detects objects and saves MP4 videos, using USB camera, pi5 and hailo hat.
+
 ![screenshot](screen.jpg)
 
 To setup the hailo..
