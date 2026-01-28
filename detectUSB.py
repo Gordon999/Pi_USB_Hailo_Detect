@@ -2,7 +2,7 @@
 
 """Example module for Hailo Detection using USB camera."""
 
-"""Copyright (c) 2025
+"""Copyright (c) 2026
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. """
 
-version = 1.00
+version = 1.01
 
 import argparse
 import cv2
@@ -104,6 +104,23 @@ def text (cn,rn,th,text,tf,tr,tg,tb,tw):
         tx += int(bw/2.2)
         ty += int(bh/3)
     cv2.putText(q,text,(tx ,ty), font, tf,(tb,tg,tr),tw)
+    
+# detect which hailo
+if os.path.exists ("/run/shm/hailo_m.txt"): 
+    os.remove("/run/shm/hailo_m.txt")
+os.system("hailortcli fw-control identify >> /run/shm/hailo_m.txt")
+hver = ""
+with open("/run/shm/hailo_m.txt", "r") as file:
+    line = file.readline()
+    while line:
+       line = file.readline()
+       if line[0:11] == "Device Arch":
+           hver = line[26:28]
+if hver != "":
+    print("HAILO",hver)
+else:
+    print("No Hailo HAT installed ?")
+    quit()
 
 def camera_controls():
     # find camera controls
@@ -203,9 +220,13 @@ def draw_objects(request):
 if __name__ == "__main__":
     # Parse command-line arguments.
     parser = argparse.ArgumentParser(description="Detection Example")
-    parser.add_argument("-m", "--model", help="Path for the HEF model.",
+    if hver == "8L":
+        parser.add_argument("-m", "--model", help="Path for the HEF model.",
                         default="/usr/share/hailo-models/yolov8s_h8l.hef")
-    parser.add_argument("-l", "--labels", default="coco.txt",
+    else:
+        parser.add_argument("-m", "--model", help="Path for the HEF model.",
+                        default="/usr/share/hailo-models/yolov8m_h10.hef")
+    parser.add_argument("-l", "--labels", default= h_user + "/picamera2/examples/hailo/coco.txt",
                         help="Path to a text file containing labels.")
     parser.add_argument("-s", "--score_thresh", type=float, default=0.5,
                         help="Score threshold, must be a float between 0 and 1.")
@@ -255,6 +276,7 @@ if __name__ == "__main__":
                 if len(detections) != 0:
                     value = float(detections[0][2])
                     obj = detections[0][0]
+                    print(obj)
                     if value > args.score_thresh and value < 1 and obj == objects[d]:
                         det_timer = time.monotonic()
                         # start MP4 recording
