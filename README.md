@@ -6,11 +6,17 @@ Detects objects and saves MP4 videos, using USB camera, pi5 and hailo hat.
 
 To setup the hailo..
 
-with Trixie sudo apt install dkms
-
- sudo apt install hailo-all
+sudo apt update && sudo apt full-upgrade -y
  
-reboot
+ sudo reboot
+
+ with Trixie sudo apt install dkms
+
+ with hailo 8L (Ai HAT+) sudo apt install hailo-all
+
+ with hailo 10H (Ai HAT+2) sudo apt install hailo-h10-all
+
+ sudo reboot
 
  git clone --depth 1 https://github.com/raspberrypi/picamera2
  
